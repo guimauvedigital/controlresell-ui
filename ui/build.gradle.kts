@@ -1,8 +1,9 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
     alias(libs.plugins.multiplatform)
-    //alias(libs.plugins.android.library)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.compose.multiplatform)
     alias(libs.plugins.compose.hot.reload)
@@ -44,22 +45,37 @@ mavenPublishing {
 }
 
 kotlin {
-    applyDefaultHierarchyTemplate()
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "ControlResellUI"
+            isStatic = true
+            binaryOption("bundleId", "com.controlresell.ui")
+        }
+    }
 
-    //androidTarget()
+    androidTarget()
 
     jvm("desktop")
 
-    /*
     js {
-        browser()
+        browser {
+            commonWebpackConfig {
+                outputFileName = "com.controlresell.ui.js"
+                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
+                    static = (static ?: mutableListOf()).apply {
+                        add(project.projectDir.path)
+                    }
+                }
+            }
+        }
         binaries.executable()
     }
-     */
 
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    applyDefaultHierarchyTemplate()
 
     sourceSets {
         all {
@@ -83,7 +99,6 @@ kotlin {
             }
         }
 
-        /*
         val androidMain by getting {
             dependencies {
                 implementation("androidx.appcompat:appcompat:1.7.1")
@@ -94,7 +109,6 @@ kotlin {
                 //implementation(libs.compose.uitooling)
             }
         }
-         */
 
         val desktopMain by getting {
             dependencies {
@@ -103,13 +117,11 @@ kotlin {
             }
         }
 
-        /*
         val jsMain by getting {
             dependencies {
                 implementation(compose.html.core)
             }
         }
-         */
 
         val iosMain by getting {
             dependencies {
@@ -119,16 +131,15 @@ kotlin {
     }
 }
 
-/*
 android {
     namespace = "com.controlresell.ui"
     compileSdk = 35
 
     buildFeatures {
-        compose = false
+        compose = true
     }
     defaultConfig {
-        minSdk = 21
+        minSdk = 26
     }
     sourceSets["main"].apply {
         manifest.srcFile("src/androidMain/AndroidManifest.xml")
@@ -140,7 +151,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_21
     }
 }
- */
 
 compose.desktop {
     application {
@@ -154,8 +164,6 @@ compose.desktop {
     }
 }
 
-/*
-compose.experimental.web {
-    application {}
+compose.web {
+
 }
- */

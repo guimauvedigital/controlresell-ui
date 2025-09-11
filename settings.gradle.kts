@@ -4,6 +4,7 @@ pluginManagement {
         mavenCentral()
         gradlePluginPortal()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        mavenLocal()
     }
 }
 
@@ -23,6 +24,7 @@ dependencyResolutionManagement {
             plugin("compose-hot-reload", "org.jetbrains.compose.hot-reload").version("1.0.0-beta04")
             plugin("compose-multiplatform", "org.jetbrains.compose").version("1.8.1")
             plugin("android-library", "com.android.library").version("8.7.1")
+            plugin("android-application", "com.android.application").version("8.7.1")
             plugin("storytale", "org.jetbrains.compose.storytale").version("0.0.4-alpha01+dev18")
             plugin("kover", "org.jetbrains.kotlinx.kover").version("0.8.3")
             plugin("detekt", "io.gitlab.arturbosch.detekt").version("1.23.8")
