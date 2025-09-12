@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dropdown_menu_select">Select</string>
+    <string name="dropdown_menu_search">Search…</string>
+    <string name="dropdown_menu_no_items">No items found</string>
+    <string name="dropdown_menu_popular">Popular</string>
+</resources>
