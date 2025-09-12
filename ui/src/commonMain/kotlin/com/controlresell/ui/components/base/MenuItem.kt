@@ -1,19 +1,23 @@
 package com.controlresell.ui.components.base
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import com.controlresell.ui.theme.AppColors
 import com.controlresell.ui.theme.LocalAppColors
 import com.controlresell.ui.theme.LocalAppTypography
 
@@ -62,22 +66,57 @@ fun MenuItem(
     onClick: (() -> Unit)? = null,
     disabled: Boolean = false,
     overridingContent: (@Composable (() -> Unit))? = null,
+    backgroundColor: Color = AppColors.CharlestonGreen,
+    borderColor: Color = AppColors.Jet,
 ) {
-    Card(
+    val shape = RoundedCornerShape(
+        topStart = if (hasBorderRadiusPerSide.top) 8.dp else 0.dp,
+        topEnd = if (hasBorderRadiusPerSide.top) 8.dp else 0.dp,
+        bottomStart = if (hasBorderRadiusPerSide.bottom) 8.dp else 0.dp,
+        bottomEnd = if (hasBorderRadiusPerSide.bottom) 8.dp else 0.dp,
+    )
+
+    Box(
         modifier = cardModifier
             .fillMaxWidth()
-            .clip(
-                RoundedCornerShape(
-                    topStart = if (hasBorderRadiusPerSide.top) 8.dp else 0.dp,
-                    topEnd = if (hasBorderRadiusPerSide.top) 8.dp else 0.dp,
-                    bottomStart = if (hasBorderRadiusPerSide.bottom) 8.dp else 0.dp,
-                    bottomEnd = if (hasBorderRadiusPerSide.bottom) 8.dp else 0.dp,
-                )
-            ),
-        onClick = onClick ?: {},
-        enabled = !disabled,
-        //borderColor = AppColors.CharlestonGreen,
-        //hideBorderPerSide = hideBorderPerSide
+            .clip(shape)
+            .background(backgroundColor)
+            .then(
+                if (hideBorderPerSide.top || hideBorderPerSide.bottom || hideBorderPerSide.left || hideBorderPerSide.right) {
+                    Modifier.drawWithContent {
+                        drawContent()
+                        val strokeWidth = 1.dp.toPx()
+                        val halfStroke = strokeWidth / 2
+                        val w = size.width
+                        val h = size.height
+                        if (!hideBorderPerSide.top) drawLine(
+                            borderColor,
+                            Offset(0f, halfStroke),
+                            Offset(w, halfStroke),
+                            strokeWidth
+                        )
+                        if (!hideBorderPerSide.bottom) drawLine(
+                            borderColor,
+                            Offset(0f, h - halfStroke),
+                            Offset(w, h - halfStroke),
+                            strokeWidth
+                        )
+                        if (!hideBorderPerSide.left) drawLine(
+                            borderColor,
+                            Offset(halfStroke, 0f),
+                            Offset(halfStroke, h),
+                            strokeWidth
+                        )
+                        if (!hideBorderPerSide.right) drawLine(
+                            borderColor,
+                            Offset(w - halfStroke, 0f),
+                            Offset(w - halfStroke, h),
+                            strokeWidth
+                        )
+                    }
+                } else Modifier
+            )
+            .clickable(enabled = !disabled) { onClick?.invoke() }
     ) {
         if (overridingContent != null) {
             overridingContent()
@@ -92,14 +131,14 @@ fun MenuItem(
                         leftElement?.invoke()
                         Column {
                             if (label != null) {
-                                Text(
+                                AppText(
                                     text = label,
                                     style = labelStyle ?: LocalAppTypography.current.body,
                                     modifier = if (leftElement != null) Modifier.padding(start = 16.dp) else Modifier
                                 )
                             }
                             label2?.let { (text, style) ->
-                                Text(
+                                AppText(
                                     text = text,
                                     style = style ?: LocalAppTypography.current.body,
                                     modifier = if (leftElement != null) Modifier.padding(start = 16.dp) else Modifier

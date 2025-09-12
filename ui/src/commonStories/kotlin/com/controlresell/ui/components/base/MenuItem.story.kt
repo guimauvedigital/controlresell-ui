@@ -8,30 +8,28 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.storytale.story
 
 val `MenuItem default state` by story {
+    val text by parameter("Text")
+    val actionText by parameter("ActionText")
 
     Column {
         MenuItem(
-            label = "Menu Item",
+            label = text,
             label2 = "Label 2" to null,
-            actionLabel = "Action",
-            hasBorderRadiusPerSide = BorderRadiusPerSide.topFull
+            actionLabel = actionText,
+            hasBorderRadiusPerSide = BorderRadiusPerSide.topFull,
+            hideBorderPerSide = BorderPerSide.topFull
         )
         MenuItem(
-            label = "Menu Item",
+            label = text,
             label2 = "Label 2" to null,
-            actionLabel = "Action",
-        )
-        MenuItem(
-            label = "Menu Item",
-            label2 = "Label 2" to null,
-            actionLabel = "Action",
+            actionLabel = actionText,
             hasBorderRadiusPerSide = BorderRadiusPerSide.bottomFull
         )
         Spacer(Modifier.height(16.dp))
         MenuItem(
-            label = "Menu Item",
+            label = text,
             label2 = "Label 2" to null,
-            actionLabel = "Action",
+            actionLabel = actionText,
             hasBorderRadiusPerSide = BorderRadiusPerSide.full
         )
     }
