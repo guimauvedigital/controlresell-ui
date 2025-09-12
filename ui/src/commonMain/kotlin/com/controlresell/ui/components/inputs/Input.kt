@@ -27,7 +27,7 @@ import com.controlresell.ui.theme.LocalAppColors
 import com.controlresell.ui.theme.LocalAppTypography
 
 @Composable
-fun AppInput(
+fun Input(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,

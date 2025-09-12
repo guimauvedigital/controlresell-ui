@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import com.controlresell.ui.theme.LocalAppColors
 import com.controlresell.ui.theme.LocalAppTypography
 
@@ -14,11 +15,13 @@ fun AppText(
     modifier: Modifier = Modifier,
     style: TextStyle = LocalAppTypography.current.body,
     color: Color = LocalAppColors.current.textPrimary,
+    textAlign: TextAlign? = null,
 ) {
     Text(
         text = text,
         modifier = modifier,
         style = style,
-        color = color
+        color = color,
+        textAlign = textAlign,
     )
 }
