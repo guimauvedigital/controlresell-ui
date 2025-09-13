@@ -7,9 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -68,11 +66,7 @@ fun Button(
             style = LocalTypography.current.p
         )
 
-        if (loading) CircularProgressIndicator(
-            modifier = Modifier.size(20.dp),
-            color = Gray,
-            strokeWidth = 2.dp
-        )
+        if (loading) ActivityIndicator(size = 20.dp)
     }
 
 }

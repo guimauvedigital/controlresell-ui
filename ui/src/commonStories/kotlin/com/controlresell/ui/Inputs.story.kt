@@ -1,6 +1,7 @@
 package com.controlresell.ui
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.ExperimentalComposeApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -26,6 +27,7 @@ val Input by story {
     }
 }
 
+@OptIn(ExperimentalComposeApi::class)
 val DropdownMenu by story {
     ControlResellTheme {
         val maxSelection by parameter(2)
@@ -79,6 +81,23 @@ val DropdownMenu by story {
             getColorForSelection = { value, _ ->
                 if (value.isPopular) Color.Green else Color.White
             },
+            modifier = Modifier.padding(16.dp)
+        )
+    }
+}
+
+val ActivityIndicator by story {
+    ControlResellTheme {
+        val size by parameter(40)
+        val segmentCount by parameter(8)
+        val animationDuration by parameter(1000)
+
+        ActivityIndicator(
+            size = size.dp,
+            style = DefaultActivityIndicatorStyle.copy(
+                segmentCount = segmentCount,
+                animationDuration = animationDuration
+            ),
             modifier = Modifier.padding(16.dp)
         )
     }

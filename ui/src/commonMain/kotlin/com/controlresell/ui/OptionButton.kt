@@ -9,7 +9,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -72,11 +71,7 @@ fun OptionButton(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 if (loading) {
-                    CircularProgressIndicator(
-                        strokeWidth = 2.dp,
-                        modifier = Modifier.height(style.iconSize),
-                        color = White
-                    )
+                    ActivityIndicator(size = style.iconSize)
                 } else {
                     (icon ?: style.defaultIcon)?.let {
                         Icon(
