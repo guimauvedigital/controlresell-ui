@@ -1,4 +1,4 @@
-package com.controlresell.ui.theme
+package com.controlresell.ui
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable

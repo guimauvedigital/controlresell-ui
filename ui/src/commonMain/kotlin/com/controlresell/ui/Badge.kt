@@ -1,4 +1,4 @@
-package com.controlresell.ui.components
+package com.controlresell.ui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -17,9 +17,6 @@ import com.adamglin.phosphoricons.Regular
 import com.adamglin.phosphoricons.regular.X
 import com.controlresell.ui.generated.resources.Res
 import com.controlresell.ui.generated.resources.badge_delete_button_description
-import com.controlresell.ui.theme.BadgeStyle
-import com.controlresell.ui.theme.LocalBadgeStyle
-import com.controlresell.ui.theme.LocalColorScheme
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

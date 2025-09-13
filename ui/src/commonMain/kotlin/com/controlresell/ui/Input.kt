@@ -1,11 +1,14 @@
-package com.controlresell.ui.components
+package com.controlresell.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.*
@@ -22,9 +25,6 @@ import com.adamglin.phosphoricons.Fill
 import com.adamglin.phosphoricons.fill.XCircle
 import com.controlresell.ui.generated.resources.Res
 import com.controlresell.ui.generated.resources.clear_button_description
-import com.controlresell.ui.theme.InputStyle
-import com.controlresell.ui.theme.LocalColorScheme
-import com.controlresell.ui.theme.LocalInputStyle
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -82,7 +82,6 @@ fun Input(
                 }
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Column(modifier = Modifier.weight(1f)) {

@@ -1,4 +1,4 @@
-package com.controlresell.ui.components
+package com.controlresell.ui
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -20,7 +20,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.controlresell.ui.theme.*
 
 @Composable
 fun OptionButton(

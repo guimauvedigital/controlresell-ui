@@ -1,4 +1,4 @@
-package com.controlresell.ui.theme
+package com.controlresell.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -19,6 +19,7 @@ val LocalOptionButtonStyle = compositionLocalOf { OptionButtonStyle() }
 val LocalInputStyle = compositionLocalOf { InputStyle() }
 val LocalBadgeStyle = compositionLocalOf { BadgeStyle() }
 val LocalCardStyle = staticCompositionLocalOf { CardStyle() }
+val LocalMenuItemStyle = staticCompositionLocalOf { MenuItemStyle() }
 
 @Composable
 fun ControlResellTheme(
@@ -39,6 +40,7 @@ fun ControlResellTheme(
                 LocalInputStyle provides DefaultInputStyle,
                 LocalBadgeStyle provides DefaultBadgeStyle,
                 LocalCardStyle provides DefaultCardStyle,
+                LocalMenuItemStyle provides DefaultMenuItemStyle,
             ) {
                 Box(Modifier.fillMaxSize().background(colors.background)) {
                     content()

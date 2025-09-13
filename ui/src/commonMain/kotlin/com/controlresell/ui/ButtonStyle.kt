@@ -1,4 +1,4 @@
-package com.controlresell.ui.theme
+package com.controlresell.ui
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color

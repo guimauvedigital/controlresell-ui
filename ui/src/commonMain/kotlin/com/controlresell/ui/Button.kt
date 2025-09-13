@@ -1,4 +1,4 @@
-package com.controlresell.ui.components
+package com.controlresell.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -16,10 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.controlresell.ui.theme.ButtonStyle
-import com.controlresell.ui.theme.Gray
-import com.controlresell.ui.theme.LocalButtonStyle
-import com.controlresell.ui.theme.LocalTypography
 
 @Composable
 fun Button(

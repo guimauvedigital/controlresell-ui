@@ -1,4 +1,4 @@
-package com.controlresell.ui.components
+package com.controlresell.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
@@ -19,7 +19,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import com.controlresell.ui.theme.LocalDefaultTextStyle
 
 @Composable
 fun Icon(

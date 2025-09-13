@@ -1,4 +1,4 @@
-package com.controlresell.ui.components
+package com.controlresell.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -10,7 +10,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.controlresell.ui.theme.LocalTypography
 
 @Composable
 fun Header(

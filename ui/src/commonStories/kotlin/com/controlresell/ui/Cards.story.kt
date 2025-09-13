@@ -1,11 +1,10 @@
-package com.controlresell.ui.components
+package com.controlresell.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.controlresell.ui.theme.*
 import org.jetbrains.compose.storytale.story
 
 val Card by story {
@@ -46,7 +45,7 @@ val MenuItem by story {
         ) {
             MenuItem(
                 label = text,
-                label2 = "Label 2" to null,
+                label2 = "Label 2",
                 actionLabel = actionText,
                 cardStyle = LocalCardStyle.current.copy(
                     roundedCorners = TopRoundedCorners,
@@ -54,7 +53,7 @@ val MenuItem by story {
             )
             MenuItem(
                 label = text,
-                label2 = "Label 2" to null,
+                label2 = "Label 2",
                 actionLabel = actionText,
                 cardStyle = BorderedCardStyle.copy(
                     roundedCorners = BottomRoundedCorners,
@@ -64,7 +63,7 @@ val MenuItem by story {
             Spacer(Modifier.height(16.dp))
             MenuItem(
                 label = text,
-                label2 = "Label 2" to null,
+                label2 = "Label 2",
                 actionLabel = actionText,
             )
         }

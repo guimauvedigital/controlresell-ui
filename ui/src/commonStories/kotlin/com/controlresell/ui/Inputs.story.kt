@@ -1,8 +1,30 @@
-package com.controlresell.ui.components
+package com.controlresell.ui
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.controlresell.ui.theme.ControlResellTheme
+import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.storytale.story
+
+val Input by story {
+    ControlResellTheme {
+        var value by parameter("Input text")
+        val placeholder by parameter("Hint text")
+        val label by parameter<String?>(null)
+        val successMsg by parameter<String?>(null)
+        val errorMsg by parameter<String?>(null)
+
+        Input(
+            value = value,
+            onValueChange = { value = it },
+            placeholder = placeholder,
+            label = label,
+            successMessage = successMsg,
+            errorMessage = errorMsg,
+            modifier = Modifier.padding(16.dp)
+        )
+    }
+}
 
 val DropdownMenu by story {
     ControlResellTheme {
@@ -52,7 +74,8 @@ val DropdownMenu by story {
             },
             getColorForSelection = { value, _ ->
                 if (value.isPopular) Color.Green else Color.White
-            }
+            },
+            modifier = Modifier.padding(16.dp)
         )
     }
 }

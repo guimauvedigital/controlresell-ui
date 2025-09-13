@@ -1,4 +1,4 @@
-package com.controlresell.ui.components
+package com.controlresell.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -14,8 +14,6 @@ import com.adamglin.phosphoricons.Bold
 import com.adamglin.phosphoricons.bold.ArrowLeft
 import com.controlresell.ui.generated.resources.Res
 import com.controlresell.ui.generated.resources.back_button_description
-import com.controlresell.ui.theme.LocalColorScheme
-import com.controlresell.ui.theme.LocalTypography
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

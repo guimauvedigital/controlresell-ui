@@ -1,4 +1,4 @@
-package com.controlresell.ui.components
+package com.controlresell.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,7 +12,6 @@ import com.adamglin.phosphoricons.Bold
 import com.adamglin.phosphoricons.bold.Check
 import com.adamglin.phosphoricons.bold.PaperPlaneTilt
 import com.adamglin.phosphoricons.bold.Sliders
-import com.controlresell.ui.theme.*
 import org.jetbrains.compose.storytale.story
 
 val Button by story(group = "Buttons") {

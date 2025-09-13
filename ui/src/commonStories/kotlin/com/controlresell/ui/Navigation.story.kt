@@ -1,6 +1,5 @@
-package com.controlresell.ui.components
+package com.controlresell.ui
 
-import com.controlresell.ui.theme.ControlResellTheme
 import org.jetbrains.compose.storytale.story
 
 val Header by story {

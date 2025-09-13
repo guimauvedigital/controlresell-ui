@@ -1,4 +1,4 @@
-package com.controlresell.ui.components
+package com.controlresell.ui
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -21,9 +21,6 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import com.controlresell.ui.generated.resources.*
-import com.controlresell.ui.theme.DefaultOptionButtonStyle
-import com.controlresell.ui.theme.Success
-import com.controlresell.ui.theme.SuccessOpacity16
 import org.jetbrains.compose.resources.stringResource
 
 // --- Models ---
@@ -60,6 +57,7 @@ fun <T> DropdownMenu(
     getColorForSelection: ((value: DropdownMenuOption<T>, index: Int) -> Color)? = null,
     optionContainerWidth: Int? = null,
     optionContainerBackgroundColor: Color = Color.Black,
+    modifier: Modifier,
 ) {
 
     var state by remember { mutableStateOf(DropdownMenuState<T>()) }
@@ -75,7 +73,7 @@ fun <T> DropdownMenu(
         onElementSelected?.invoke(defaults, state.selectedItems)
     }
 
-    Column(modifier = Modifier.wrapContentSize()) {
+    Column(modifier = modifier.wrapContentSize()) {
         // --- Dropdown Toggle ---
         if (containerType == "menu") {
             MenuItem(
@@ -90,7 +88,7 @@ fun <T> DropdownMenu(
                 onClick = {
                     state = state.copy(isVisible = !state.isVisible)
                 },
-                cardModifier = Modifier.onGloballyPositioned { layoutCoordinates ->
+                modifier = Modifier.onGloballyPositioned { layoutCoordinates ->
                     toggleSize = layoutCoordinates.size
                 }
             )

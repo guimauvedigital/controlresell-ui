@@ -1,4 +1,4 @@
-package com.controlresell.ui.components
+package com.controlresell.ui
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -20,10 +20,6 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.controlresell.ui.theme.CardStyle
-import com.controlresell.ui.theme.LocalCardStyle
-import com.controlresell.ui.theme.SkeletonPlaceholder
-import com.controlresell.ui.theme.borderSides
 
 @Composable
 fun Card(
