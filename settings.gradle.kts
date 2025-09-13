@@ -30,7 +30,6 @@ dependencyResolutionManagement {
             plugin("detekt", "io.gitlab.arturbosch.detekt").version("1.23.8")
             plugin("ksp", "com.google.devtools.ksp").version("2.1.21-2.0.2")
             plugin("maven", "com.vanniktech.maven.publish").version("0.30.0")
-            plugin("pkg", "digital.guimauve.pkg").version("0.1.3")
 
             // AndroidX
             library("androidx-appcompat", "androidx.appcompat:appcompat:1.7.1")

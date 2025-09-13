@@ -15,7 +15,6 @@ mavenPublishing {
     publishing {
         repositories {
             publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.CENTRAL_PORTAL)
-            pkg(project)
         }
     }
     signAllPublications()
