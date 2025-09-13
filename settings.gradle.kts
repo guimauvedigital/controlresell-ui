@@ -32,9 +32,13 @@ dependencyResolutionManagement {
             plugin("maven", "com.vanniktech.maven.publish").version("0.30.0")
             plugin("pkg", "digital.guimauve.pkg").version("0.1.3")
 
-            // ControlResell
-            library("controlresell-core", "com.controlresell:core:1.2.3")
-            library("controlresell-core-commons", "com.controlresell:core-commons:1.2.3")
+            // AndroidX
+            library("androidx-appcompat", "androidx.appcompat:appcompat:1.7.1")
+            library("androidx-activity-compose", "androidx.activity:activity-compose:1.10.1")
+            library("compose-uitooling", "androidx.compose.ui:ui-tooling:1.9.0")
+
+            // Other libraries
+            library("phosphoricon", "com.adamglin:phosphor-icon:1.0.0")
         }
     }
 }
