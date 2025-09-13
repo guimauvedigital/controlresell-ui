@@ -87,7 +87,6 @@ fun <T> DropdownMenu(
                         tint = MaterialTheme.colorScheme.onSurface
                     )
                 },
-                hasBorderRadiusPerSide = BorderRadiusPerSide.full,
                 onClick = {
                     state = state.copy(isVisible = !state.isVisible)
                 },

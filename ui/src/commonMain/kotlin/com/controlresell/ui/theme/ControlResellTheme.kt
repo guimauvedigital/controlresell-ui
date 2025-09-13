@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 
@@ -17,6 +18,7 @@ val LocalButtonStyle = compositionLocalOf { ButtonStyle() }
 val LocalOptionButtonStyle = compositionLocalOf { OptionButtonStyle() }
 val LocalInputStyle = compositionLocalOf { InputStyle() }
 val LocalBadgeStyle = compositionLocalOf { BadgeStyle() }
+val LocalCardStyle = staticCompositionLocalOf { CardStyle() }
 
 @Composable
 fun ControlResellTheme(
@@ -36,6 +38,7 @@ fun ControlResellTheme(
                 LocalOptionButtonStyle provides DefaultOptionButtonStyle,
                 LocalInputStyle provides DefaultInputStyle,
                 LocalBadgeStyle provides DefaultBadgeStyle,
+                LocalCardStyle provides DefaultCardStyle,
             ) {
                 Box(Modifier.fillMaxSize().background(colors.background)) {
                     content()

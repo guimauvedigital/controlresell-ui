@@ -2,6 +2,10 @@ package com.controlresell.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.adamglin.PhosphorIcons
 import com.adamglin.phosphoricons.Bold
@@ -18,6 +22,7 @@ val Button by story(group = "Buttons") {
 
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(16.dp).verticalScroll(rememberScrollState())
         ) {
             Button(
                 text = text,
@@ -53,6 +58,7 @@ val OptionButton by story(group = "Buttons") {
 
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(16.dp).verticalScroll(rememberScrollState())
         ) {
             OptionButton(
                 icon = PhosphorIcons.Bold.PaperPlaneTilt,
@@ -60,12 +66,6 @@ val OptionButton by story(group = "Buttons") {
                 onClick = {},
             )
             OptionButton(
-                text = text,
-                enabled = enabled,
-                onClick = {},
-            )
-            OptionButton(
-                icon = PhosphorIcons.Bold.PaperPlaneTilt,
                 text = text,
                 enabled = enabled,
                 onClick = {},
@@ -92,6 +92,26 @@ val OptionButton by story(group = "Buttons") {
                 enabled = enabled,
                 onClick = {},
                 style = SelectedOptionButtonStyle
+            )
+        }
+    }
+}
+
+val Badge by story {
+    ControlResellTheme {
+        val text by parameter("Default")
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Badge(
+                color = ForestGreen,
+                text = text,
+            )
+            Badge(
+                color = PrincetonOrange,
+                text = text,
             )
         }
     }
