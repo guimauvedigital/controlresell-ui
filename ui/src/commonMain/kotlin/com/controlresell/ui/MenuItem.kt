@@ -23,7 +23,7 @@ fun MenuItem(
     style: MenuItemStyle = LocalMenuItemStyle.current,
     cardStyle: CardStyle = LocalCardStyle.current,
     onClick: (() -> Unit)? = null,
-    enabled: Boolean = false,
+    enabled: Boolean = true,
 ) {
 
     // Note: `overridingContent` was removed because it's the same as putting it directly in a `Card`

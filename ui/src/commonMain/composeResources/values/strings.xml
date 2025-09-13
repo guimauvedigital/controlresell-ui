@@ -7,4 +7,8 @@
     <string name="dropdown_menu_search">Search…</string>
     <string name="dropdown_menu_no_items">No items found</string>
     <string name="dropdown_menu_popular">Popular</string>
+    <plurals name="dropdown_menu_maximum_choices_number">
+        <item quantity="one">Maximum %1$d choice</item>
+        <item quantity="other">Maximum %1$d choices</item>
+    </plurals>
 </resources>
