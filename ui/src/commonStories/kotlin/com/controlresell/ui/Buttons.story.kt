@@ -2,6 +2,7 @@ package com.controlresell.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -25,24 +26,19 @@ val Button by story(group = "Buttons") {
         ) {
             Button(
                 text = text,
-                enabled = enabled,
-                onClick = {},
-            )
-            Button(
-                text = text,
                 style = PrimaryButtonStyle,
                 enabled = enabled,
                 onClick = {},
             )
             Button(
                 text = text,
-                style = SecondaryButtonStyle,
+                style = PrimaryTransparentButtonStyle,
                 enabled = enabled,
                 onClick = {},
             )
             Button(
                 text = text,
-                style = SecondaryInvertedButtonStyle,
+                style = SecondaryButtonStyle,
                 enabled = enabled,
                 onClick = {},
             )
@@ -92,6 +88,68 @@ val OptionButton by story(group = "Buttons") {
                 onClick = {},
                 style = SelectedOptionButtonStyle
             )
+            OptionButton(
+                text = text,
+                enabled = enabled,
+                onClick = {},
+                style = DraftStatusOptionButtonStyle
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OptionButton(
+                    text = text,
+                    enabled = enabled,
+                    onClick = {},
+                    style = PendingStatusOptionButtonStyle(false)
+                )
+                OptionButton(
+                    text = text,
+                    enabled = enabled,
+                    onClick = {},
+                    style = PendingStatusOptionButtonStyle(true)
+                )
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OptionButton(
+                    text = text,
+                    enabled = enabled,
+                    onClick = {},
+                    style = ProgressStatusOptionButtonStyle(false)
+                )
+                OptionButton(
+                    text = text,
+                    enabled = enabled,
+                    onClick = {},
+                    style = ProgressStatusOptionButtonStyle(true)
+                )
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OptionButton(
+                    text = text,
+                    enabled = enabled,
+                    onClick = {},
+                    style = DoneStatusOptionButtonStyle(false)
+                )
+                OptionButton(
+                    text = text,
+                    enabled = enabled,
+                    onClick = {},
+                    style = DoneStatusOptionButtonStyle(true)
+                )
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OptionButton(
+                    text = text,
+                    enabled = enabled,
+                    onClick = {},
+                    style = ErrorStatusOptionButtonStyle(false)
+                )
+                OptionButton(
+                    text = text,
+                    enabled = enabled,
+                    onClick = {},
+                    style = ErrorStatusOptionButtonStyle(true)
+                )
+            }
         }
     }
 }

@@ -37,12 +37,12 @@ fun Card(
 
     var layoutSize by remember { mutableStateOf(IntSize.Zero) }
     val interactionSource = remember { MutableInteractionSource() }
-    val pressed = interactionSource.collectIsPressedAsState()
+    val pressed by interactionSource.collectIsPressedAsState()
 
     // Press animation: fade opacity when pressed
     val alpha by animateFloatAsState(
-        targetValue = if (pressed.value) 0.75f else 1f,
-        animationSpec = tween(durationMillis = if (pressed.value) 100 else 150)
+        targetValue = if (pressed) 0.75f else 1f,
+        animationSpec = tween(durationMillis = if (pressed) 100 else 150)
     )
 
     Box(

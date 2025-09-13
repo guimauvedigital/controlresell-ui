@@ -61,14 +61,18 @@ fun OptionButton(
                 .clickable(
                     enabled = enabled && !loading,
                     indication = null,
-                    interactionSource = interactionSource
-                ) { onClick?.invoke() }
-                .padding(horizontal = if (text != null) 16.dp else 12.dp, vertical = 10.dp),
+                    interactionSource = interactionSource,
+                    onClick = { onClick?.invoke() }
+                ),
             contentAlignment = Alignment.Center
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(
+                    horizontal = style.horizontalPadding + (if (text != null) 4.dp else 0.dp),
+                    vertical = style.verticalPadding,
+                )
             ) {
                 if (loading) {
                     ActivityIndicator(size = style.iconSize)

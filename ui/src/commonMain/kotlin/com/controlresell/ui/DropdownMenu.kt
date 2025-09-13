@@ -200,7 +200,7 @@ fun <T> DropdownMenu(
                             )
                             if (item.isPopular) OptionButton(
                                 text = stringResource(Res.string.dropdown_menu_popular),
-                                style = DefaultOptionButtonStyle.copy(
+                                style = StatusOptionButtonStyle.copy(
                                     backgroundColor = SuccessOpacity16,
                                     textColor = Success
                                 )
