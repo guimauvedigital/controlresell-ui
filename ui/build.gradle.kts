@@ -86,8 +86,8 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(compose.runtime)
-                implementation(compose.material3)
-                implementation(compose.materialIconsExtended)
+                implementation(compose.ui)
+                implementation(compose.foundation)
                 implementation(compose.components.resources)
 
                 api(libs.phosphoricon)
