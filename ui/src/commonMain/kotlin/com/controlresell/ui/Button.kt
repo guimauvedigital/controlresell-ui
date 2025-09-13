@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -47,16 +48,14 @@ fun Button(
                 onClick = onClick,
                 onClickLabel = text
             )
-            /*
-            .pointerInteropFilter { motionEvent ->
-                when (motionEvent.action) {
-                    MotionEvent.ACTION_DOWN -> pressed = true
-                    MotionEvent.ACTION_UP,
-                    MotionEvent.ACTION_CANCEL -> pressed = false
+            .pointerInput(enabled, loading) {
+                awaitPointerEventScope {
+                    while (true) {
+                        val event = awaitPointerEvent()
+                        pressed = event.changes.any { it.pressed }
+                    }
                 }
-                false
             }
-             */
             .padding(horizontal = 24.dp, vertical = 12.dp),
         contentAlignment = Alignment.Center
     ) {
