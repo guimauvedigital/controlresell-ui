@@ -43,6 +43,8 @@ data class DropdownMenuState<T>(
     val filterInput: String = "",
 )
 
+enum class DropdownMenuType { Menu, Icon }
+
 // Note: This component might not be feature-complete yet. So it will get improved over time.
 
 @ExperimentalComposeApi
@@ -51,7 +53,7 @@ fun <T> DropdownMenu(
     options: List<DropdownMenuOption<T>>,
     title: String? = null,
     label: String? = null,
-    containerType: DropdownMenuType = DropdownMenuType.MENU,
+    containerType: DropdownMenuType = DropdownMenuType.Menu,
     maxSelection: Int? = null,
     forceAtLeastOneSelection: Boolean = false,
     closeOnSelectionWhenMaxOneSelection: Boolean = false,
@@ -81,7 +83,7 @@ fun <T> DropdownMenu(
     Column(modifier = modifier.wrapContentSize()) {
         // --- Dropdown Toggle ---
         val icon = if (state.isVisible) PhosphorIcons.Bold.CaretUp else PhosphorIcons.Bold.CaretDown
-        if (containerType == DropdownMenuType.MENU) MenuItem(
+        if (containerType == DropdownMenuType.Menu) MenuItem(
             label = label ?: stringResource(Res.string.dropdown_menu_select),
             customActionElement = {
                 Icon(

@@ -15,7 +15,7 @@ import com.adamglin.phosphoricons.bold.PaperPlaneTilt
 import com.adamglin.phosphoricons.bold.Sliders
 import org.jetbrains.compose.storytale.story
 
-val Button by story(group = "Buttons") {
+val Button by story {
     ControlResellTheme {
         val text by parameter("Main Button")
         val enabled by parameter(true)
@@ -46,7 +46,7 @@ val Button by story(group = "Buttons") {
     }
 }
 
-val OptionButton by story(group = "Buttons") {
+val OptionButton by story {
     ControlResellTheme {
         val text by parameter("Option Button")
         val enabled by parameter(true)
@@ -169,6 +169,16 @@ val Badge by story {
             Badge(
                 color = PrincetonOrange,
                 text = text,
+            )
+            Badge(
+                color = ForestGreen,
+                text = text,
+                style = RoundedBadgeStyle,
+            )
+            Badge(
+                color = PrincetonOrange,
+                text = text,
+                style = RoundedBadgeStyle,
             )
         }
     }

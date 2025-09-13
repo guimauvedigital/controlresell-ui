@@ -1,5 +1,7 @@
 package com.controlresell.ui
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.ExperimentalComposeApi
 import androidx.compose.ui.Modifier
@@ -24,6 +26,46 @@ val Input by story {
             errorMessage = errorMsg,
             modifier = Modifier.padding(16.dp)
         )
+    }
+}
+
+val Checkbox by story {
+    ControlResellTheme {
+        val text by parameter("Checkbox")
+        var checked by parameter(false)
+        val enabled by parameter(true)
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Checkbox(
+                value = checked,
+                onValueChange = { checked = it },
+                enabled = enabled,
+                shape = CheckboxShape.Circle,
+            )
+            Checkbox(
+                value = checked,
+                onValueChange = { checked = it },
+                enabled = enabled,
+                shape = CheckboxShape.Square,
+            )
+            Checkbox(
+                value = checked,
+                onValueChange = { checked = it },
+                enabled = enabled,
+                shape = CheckboxShape.Circle,
+                label = { Text(text) }
+            )
+            Checkbox(
+                value = checked,
+                onValueChange = { checked = it },
+                enabled = enabled,
+                shape = CheckboxShape.Square,
+                label = { Text(text) }
+            )
+        }
     }
 }
 

@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
 
 @Immutable
 data class BadgeStyle(
@@ -22,4 +23,9 @@ val DefaultBadgeStyle
         textStyle = LocalTypography.current.p,
         descriptionTextStyle = LocalTypography.current.p.copy(color = LocalColorScheme.current.onSurfaceVariant),
         shape = RoundedCornerShape(50),
+    )
+
+val RoundedBadgeStyle
+    @Composable get() = DefaultBadgeStyle.copy(
+        shape = RoundedCornerShape(8.dp),
     )
