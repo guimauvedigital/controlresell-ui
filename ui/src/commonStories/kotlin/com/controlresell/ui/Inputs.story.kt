@@ -69,6 +69,31 @@ val Checkbox by story {
     }
 }
 
+val Switch by story {
+    ControlResellTheme {
+        val text by parameter("Switch")
+        var checked by parameter(false)
+        val enabled by parameter(true)
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Switch(
+                value = checked,
+                onValueChange = { checked = it },
+                enabled = enabled
+            )
+            Switch(
+                value = checked,
+                onValueChange = { checked = it },
+                enabled = enabled,
+                label = { Text(text) }
+            )
+        }
+    }
+}
+
 @OptIn(ExperimentalComposeApi::class)
 val DropdownMenu by story {
     ControlResellTheme {

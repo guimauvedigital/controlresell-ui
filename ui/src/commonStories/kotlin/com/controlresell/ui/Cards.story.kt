@@ -69,3 +69,36 @@ val MenuItem by story {
         }
     }
 }
+
+val Banner by story {
+    ControlResellTheme {
+        val title by parameter("Banner Title")
+        val description by parameter("This is a banner description")
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(16.dp).verticalScroll(rememberScrollState())
+        ) {
+            Banner(
+                style = WarningBannerStyle,
+                title = title,
+                description = description,
+            )
+            Banner(
+                style = ErrorBannerStyle,
+                title = title,
+                description = description,
+            )
+            Banner(
+                style = SuccessBannerStyle,
+                title = title,
+                description = description,
+            )
+            Banner(
+                style = InfoBannerStyle,
+                title = title,
+                description = description,
+            )
+        }
+    }
+}
