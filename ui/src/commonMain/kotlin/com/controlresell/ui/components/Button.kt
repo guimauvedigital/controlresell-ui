@@ -1,4 +1,4 @@
-package com.controlresell.ui.components.buttons
+package com.controlresell.ui.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -10,36 +10,34 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.controlresell.ui.theme.LocalAppTypography
-import com.controlresell.ui.theme.buttons.ButtonPalette
-import com.controlresell.ui.theme.buttons.ButtonPalettes
+import com.controlresell.ui.theme.ButtonStyle
+import com.controlresell.ui.theme.Gray
+import com.controlresell.ui.theme.LocalButtonStyle
+import com.controlresell.ui.theme.LocalTypography
 
 @Composable
-fun MainButton(
+fun Button(
     text: String? = null,
-    type: ButtonPalette = ButtonPalettes.Primary,
     modifier: Modifier = Modifier,
+    style: ButtonStyle = LocalButtonStyle.current,
     enabled: Boolean = true,
     loading: Boolean = false,
     overridingContent: (@Composable (() -> Unit))? = null,
     onClick: () -> Unit,
 ) {
-    // Press animation (background color)
+
     var pressed by remember { mutableStateOf(false) }
     val bgColor by animateColorAsState(
-        targetValue = if (pressed) type.underlay else type.background,
+        targetValue = if (pressed) style.underlayColor else style.backgroundColor,
         animationSpec = tween(durationMillis = 150)
     )
 
-    // Disabled animation (opacity)
     val opacity by animateFloatAsState(
         targetValue = if (!enabled || loading) 0.5f else 1f,
         animationSpec = tween(durationMillis = 200)
@@ -68,18 +66,17 @@ fun MainButton(
             .padding(horizontal = 24.dp, vertical = 12.dp),
         contentAlignment = Alignment.Center
     ) {
-        if (loading) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(20.dp),
-                color = Color.Gray,
-                strokeWidth = 2.dp
-            )
-        } else {
-            overridingContent?.invoke() ?: Text(
-                text ?: "",
-                color = type.textColor,
-                style = LocalAppTypography.current.button
-            )
-        }
+        overridingContent?.invoke() ?: Text(
+            text ?: "",
+            color = style.textColor,
+            style = LocalTypography.current.p
+        )
+
+        if (loading) CircularProgressIndicator(
+            modifier = Modifier.size(20.dp),
+            color = Gray,
+            strokeWidth = 2.dp
+        )
     }
+
 }

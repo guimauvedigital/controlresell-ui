@@ -1,4 +1,4 @@
-package com.controlresell.ui.components.buttons
+package com.controlresell.ui.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -17,35 +17,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.controlresell.ui.components.base.AppText
-import com.controlresell.ui.theme.AppColors
-import com.controlresell.ui.theme.LocalAppColors
-import com.controlresell.ui.theme.LocalAppTypography
+import com.controlresell.ui.theme.*
 
 @Composable
 fun OptionButton(
     text: String? = null,
     label: String? = null,
-    icon: (@Composable (() -> Unit))? = null,
+    icon: ImageVector? = null,
     onClick: (() -> Unit)? = null,
+    style: OptionButtonStyle = LocalOptionButtonStyle.current,
     modifier: Modifier = Modifier,
+    bubbleModifier: Modifier = Modifier,
     beforeText: (@Composable (Color) -> Unit)? = null,
     afterText: (@Composable (Color) -> Unit)? = null,
-    backgroundColor: Color = Color(0x3AFFFFFF), // rgba(255,255,255,0.23)
-    textColor: Color = AppColors.White,
-    borderColor: Color = Color.Transparent,
     enabled: Boolean = true,
-    bubbleStyle: Modifier = Modifier,
-    textStyle: TextStyle = LocalAppTypography.current.body.copy(fontWeight = FontWeight.Medium),
     loading: Boolean = false,
     badgeCount: Int? = null,
     iconLabel: (@Composable (Modifier) -> Unit)? = null,
 ) {
+
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
 
@@ -55,49 +48,55 @@ fun OptionButton(
         label = "underlayAnim"
     )
 
-    val baseColor = if (enabled) backgroundColor else AppColors.Gray
-    val baseTextColor = if (enabled) textColor else LocalAppColors.current.textSecondary
+    val baseColor = if (enabled) style.backgroundColor else Gray
+    val baseTextColor = if (enabled) style.textColor else LocalColorScheme.current.onBackgroundVariant
 
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
-            modifier = bubbleStyle
+            modifier = bubbleModifier
                 .clip(CircleShape)
                 .background(baseColor)
-                .border(1.dp, if (borderColor != Color.Transparent) borderColor else baseColor, CircleShape)
+                .border(2.dp, style.borderColor, CircleShape)
                 .clickable(
                     enabled = enabled && !loading,
                     indication = null,
                     interactionSource = interactionSource
                 ) { onClick?.invoke() }
-                .padding(horizontal = if (text != null) 16.dp else 12.dp, vertical = 12.dp),
+                .padding(horizontal = if (text != null) 16.dp else 12.dp, vertical = 10.dp),
             contentAlignment = Alignment.Center
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 if (loading) {
                     CircularProgressIndicator(
                         strokeWidth = 2.dp,
-                        modifier = Modifier.size(20.dp),
-                        color = AppColors.White
+                        modifier = Modifier.height(style.iconSize),
+                        color = White
                     )
                 } else {
-                    icon?.invoke()
+                    (icon ?: style.defaultIcon)?.let {
+                        Icon(
+                            it,
+                            contentDescription = null,
+                            tint = style.textColor,
+                            modifier = Modifier.height(style.iconSize)
+                        )
+                    }
                 }
 
                 beforeText?.invoke(baseTextColor)
 
-                if (text != null) {
-                    AppText(
-                        text = text,
-                        color = baseTextColor,
-                        style = textStyle
-                    )
-                }
+                if (text != null) Text(
+                    text = text,
+                    color = baseTextColor,
+                    style = style.textStyle,
+                    modifier = Modifier.padding(vertical = 2.dp),
+                )
 
                 afterText?.invoke(baseTextColor)
             }
@@ -110,35 +109,29 @@ fun OptionButton(
             )
         }
 
-        if (label != null) {
-            AppText(
-                text = label,
-                modifier = Modifier.padding(top = 6.dp),
-                style = LocalAppTypography.current.body.copy(fontWeight = FontWeight.Medium),
-                color = LocalAppColors.current.textPrimary,
-                textAlign = TextAlign.Center
+        if (label != null) Text(
+            text = label,
+            modifier = Modifier.padding(top = 6.dp),
+            style = style.textStyle,
+            textAlign = TextAlign.Center
+        )
+
+        if (iconLabel != null) iconLabel(Modifier.padding(top = 6.dp))
+
+        if (badgeCount != null && badgeCount > 0) Box(
+            modifier = Modifier
+                .offset(x = 12.dp, y = (-12).dp)
+                .size(20.dp)
+                .clip(CircleShape)
+                .background(Color.Red),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = badgeCount.toString(),
+                style = style.textStyle,
+                color = White
             )
         }
-
-        if (iconLabel != null) {
-            iconLabel(Modifier.padding(top = 6.dp))
-        }
-
-        if (badgeCount != null && badgeCount > 0) {
-            Box(
-                modifier = Modifier
-                    .offset(x = 12.dp, y = (-12).dp)
-                    .size(20.dp)
-                    .clip(CircleShape)
-                    .background(Color.Red),
-                contentAlignment = Alignment.Center
-            ) {
-                AppText(
-                    text = badgeCount.toString(),
-                    style = LocalAppTypography.current.body.copy(fontSize = 12.sp, fontWeight = FontWeight.Bold),
-                    color = AppColors.White
-                )
-            }
-        }
     }
+
 }

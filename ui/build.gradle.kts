@@ -26,8 +26,8 @@ mavenPublishing {
 
         licenses {
             license {
-                name.set("GPL-3.0")
-                url.set("https://opensource.org/licenses/GPL-3.0")
+                name.set("Apache 2.0")
+                url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
             }
         }
         developers {
@@ -88,8 +88,9 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.material3)
                 implementation(compose.materialIconsExtended)
-                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+
+                api(libs.phosphoricon)
             }
         }
 
@@ -101,12 +102,9 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-                implementation("androidx.appcompat:appcompat:1.7.1")
-                implementation("androidx.activity:activity-compose:1.10.1")
-                implementation("androidx.compose.ui:ui-tooling:1.9.0")
-                //implementation(libs.androidx.appcompat)
-                //implementation(libs.androidx.activityCompose)
-                //implementation(libs.compose.uitooling)
+                implementation(libs.androidx.appcompat)
+                implementation(libs.androidx.activity.compose)
+                implementation(libs.compose.uitooling)
             }
         }
 

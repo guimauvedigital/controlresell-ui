@@ -1,4 +1,4 @@
-package com.controlresell.ui.components.base
+package com.controlresell.ui.components
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -11,9 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,10 +20,10 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
-import com.controlresell.ui.components.buttons.OptionButton
-import com.controlresell.ui.components.inputs.Input
 import com.controlresell.ui.generated.resources.*
-import com.controlresell.ui.theme.AppColors
+import com.controlresell.ui.theme.DefaultOptionButtonStyle
+import com.controlresell.ui.theme.Success
+import com.controlresell.ui.theme.SuccessOpacity16
 import org.jetbrains.compose.resources.stringResource
 
 // --- Models ---
@@ -99,13 +97,7 @@ fun <T> DropdownMenu(
             )
         } else {
             OptionButton(
-                icon = {
-                    Icon(
-                        imageVector = if (state.isVisible) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                },
+                icon = if (state.isVisible) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
                 onClick = {
                     state = state.copy(isVisible = !state.isVisible)
                 },
@@ -209,8 +201,10 @@ fun <T> DropdownMenu(
                                     if (item.isPopular) {
                                         OptionButton(
                                             text = stringResource(Res.string.dropdown_menu_popular),
-                                            backgroundColor = AppColors.SuccessOpacity16,
-                                            textColor = AppColors.Success
+                                            style = DefaultOptionButtonStyle.copy(
+                                                backgroundColor = SuccessOpacity16,
+                                                textColor = Success
+                                            )
                                         )
                                     }
                                     if (isSelected) {

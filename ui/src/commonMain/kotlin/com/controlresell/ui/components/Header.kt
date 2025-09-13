@@ -1,7 +1,6 @@
-package com.controlresell.ui.components.base
+package com.controlresell.ui.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -11,16 +10,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.controlresell.ui.theme.LocalAppColors
-import com.controlresell.ui.theme.LocalAppTypography
+import com.controlresell.ui.theme.LocalTypography
 
 @Composable
-fun CustomHeader(
+fun Header(
     title: String? = null,
     modifier: Modifier = Modifier,
-    titleStyle: TextStyle = LocalAppTypography.current.body.copy(
-        color = LocalAppColors.current.textPrimary
-    ),
+    titleStyle: TextStyle = LocalTypography.current.h5,
     leftElement: (@Composable () -> Unit)? = null,
     rightElement: (@Composable () -> Unit)? = null,
     onLayout: ((IntSize) -> Unit)? = null,

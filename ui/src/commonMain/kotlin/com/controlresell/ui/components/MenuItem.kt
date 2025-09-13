@@ -1,4 +1,4 @@
-package com.controlresell.ui.components.base
+package com.controlresell.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,9 +15,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import com.controlresell.ui.theme.AppColors
-import com.controlresell.ui.theme.LocalAppColors
-import com.controlresell.ui.theme.LocalAppTypography
+import com.controlresell.ui.theme.CharlestonGreen
+import com.controlresell.ui.theme.Jet
+import com.controlresell.ui.theme.LocalColorScheme
+import com.controlresell.ui.theme.LocalTypography
 
 data class BorderRadiusPerSide(
     val top: Boolean = true,
@@ -66,8 +65,8 @@ fun MenuItem(
     onClick: (() -> Unit)? = null,
     disabled: Boolean = false,
     overridingContent: (@Composable (() -> Unit))? = null,
-    backgroundColor: Color = AppColors.CharlestonGreen,
-    borderColor: Color = AppColors.Jet,
+    backgroundColor: Color = CharlestonGreen,
+    borderColor: Color = Jet,
 ) {
     val shape = RoundedCornerShape(
         topStart = if (hasBorderRadiusPerSide.top) 8.dp else 0.dp,
@@ -131,16 +130,16 @@ fun MenuItem(
                         leftElement?.invoke()
                         Column {
                             if (label != null) {
-                                AppText(
+                                com.controlresell.ui.components.Text(
                                     text = label,
-                                    style = labelStyle ?: LocalAppTypography.current.body,
+                                    style = labelStyle ?: LocalTypography.current.p,
                                     modifier = if (leftElement != null) Modifier.padding(start = 16.dp) else Modifier
                                 )
                             }
                             label2?.let { (text, style) ->
-                                AppText(
+                                com.controlresell.ui.components.Text(
                                     text = text,
-                                    style = style ?: LocalAppTypography.current.body,
+                                    style = style ?: LocalTypography.current.p,
                                     modifier = if (leftElement != null) Modifier.padding(start = 16.dp) else Modifier
                                 )
                             }
@@ -155,8 +154,8 @@ fun MenuItem(
                             actionLabel?.let {
                                 Text(
                                     text = it,
-                                    style = actionLabelStyle ?: LocalAppTypography.current.body,
-                                    color = actionLabelColor ?: LocalAppColors.current.textSecondary
+                                    style = actionLabelStyle ?: LocalTypography.current.p,
+                                    color = actionLabelColor ?: LocalColorScheme.current.onSurfaceVariant
                                 )
                             }
                         }
@@ -169,7 +168,7 @@ fun MenuItem(
                                 Icon(
                                     imageVector = Icons.Default.ChevronRight,
                                     contentDescription = "Next",
-                                    tint = LocalAppColors.current.textSecondary,
+                                    tint = LocalColorScheme.current.onSurfaceVariant,
                                     modifier = Modifier.size(24.dp)
                                 )
                             }
