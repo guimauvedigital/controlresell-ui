@@ -29,7 +29,8 @@ Then, you can use the provided components.
 
 ## Storytale
 
-You can explore the components and their usage in the Storytale app:
+- [View Storytale Web](https://ui.controlresell.com)
+- Run the desktop app locally:
 
 ```
 ./gradlew desktopStoriesRun
