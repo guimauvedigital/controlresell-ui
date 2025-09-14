@@ -39,7 +39,7 @@ fun Input(
     onFocus: (() -> Unit)? = null,
     onBlur: (() -> Unit)? = null,
     onClear: (() -> Unit)? = null,
-    rightElement: (@Composable (() -> Unit))? = null,
+    endElement: (@Composable (() -> Unit))? = null,
     errorMessage: String? = null,
     successMessage: String? = null,
     shouldFocus: Boolean = false,
@@ -124,7 +124,7 @@ fun Input(
                     }
                 }
 
-                if (rightElement != null) rightElement()
+                if (endElement != null) endElement()
             }
         }
 
