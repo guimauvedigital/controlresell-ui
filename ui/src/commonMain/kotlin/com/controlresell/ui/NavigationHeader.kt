@@ -12,19 +12,20 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Header(
+fun NavigationHeader(
     title: String? = null,
     modifier: Modifier = Modifier,
     titleStyle: TextStyle = LocalTypography.current.h5,
-    leftElement: (@Composable () -> Unit)? = null,
-    rightElement: (@Composable () -> Unit)? = null,
+    startElement: (@Composable () -> Unit)? = null,
+    endElement: (@Composable () -> Unit)? = null,
     onLayout: ((IntSize) -> Unit)? = null,
     content: @Composable (() -> Unit)? = null,
 ) {
     BoxWithConstraints(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Top))
+            .padding(vertical = 8.dp, horizontal = 16.dp)
             .onGloballyPositioned { coords ->
                 onLayout?.invoke(coords.size)
             }
@@ -35,11 +36,11 @@ fun Header(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
-                leftElement?.invoke()
+                startElement?.invoke()
             }
 
             // If children are provided → use them, otherwise show title
-            Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
+            Box(modifier = Modifier.weight(3f), contentAlignment = Alignment.Center) {
                 if (content != null) {
                     content()
                 } else if (title != null) {
@@ -54,7 +55,7 @@ fun Header(
             }
 
             Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterEnd) {
-                rightElement?.invoke()
+                endElement?.invoke()
             }
         }
     }

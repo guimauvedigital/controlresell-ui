@@ -16,7 +16,7 @@ fun MenuItem(
     actionLabel: String? = null,
     actionIconHidden: Boolean = false,
     customActionElement: (@Composable (actionLabelElement: @Composable () -> Unit) -> Unit)? = null,
-    leftElement: (@Composable (() -> Unit))? = null,
+    startElement: (@Composable (() -> Unit))? = null,
     children: (@Composable (() -> Unit))? = null,
     modifier: Modifier = Modifier,
     contentModifier: Modifier = Modifier,
@@ -41,20 +41,20 @@ fun MenuItem(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    leftElement?.invoke()
+                    startElement?.invoke()
                     Column {
                         if (label != null) {
                             Text(
                                 text = label,
                                 style = style.labelStyle,
-                                modifier = if (leftElement != null) Modifier.padding(start = 16.dp) else Modifier
+                                modifier = if (startElement != null) Modifier.padding(start = 16.dp) else Modifier
                             )
                         }
                         label2?.let {
                             Text(
                                 text = label2,
                                 style = style.label2Style,
-                                modifier = if (leftElement != null) Modifier.padding(start = 16.dp) else Modifier
+                                modifier = if (startElement != null) Modifier.padding(start = 16.dp) else Modifier
                             )
                         }
                     }
