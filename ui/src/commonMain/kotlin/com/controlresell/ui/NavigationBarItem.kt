@@ -42,7 +42,7 @@ fun RowScope.NavigationBarItem(
                 indication = null,
                 interactionSource = interactionSource
             )
-            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom))
+            .windowInsetsPadding(WindowInsets.safeContent.exclude(WindowInsets.ime).only(WindowInsetsSides.Bottom))
             .padding(vertical = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
