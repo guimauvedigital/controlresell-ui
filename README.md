@@ -8,7 +8,7 @@ To use this component library, add the following to your `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.controlresell:ui:0.2.1")
+    implementation("com.controlresell:ui:0.2.2")
 }
 ```
 
