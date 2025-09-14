@@ -11,7 +11,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -22,6 +24,14 @@ fun RowScope.NavigationBarItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     style: NavigationBarStyle = LocalNavigationBarStyle.current,
+    renderIcon: @Composable (ImageVector, Dp, Color) -> Unit = { imageVector, size, color ->
+        Icon(
+            imageVector = imageVector,
+            contentDescription = null,
+            tint = color,
+            modifier = Modifier.size(size)
+        )
+    },
 ) {
 
     val color = if (selected) style.selectedTextColor else style.textColor
@@ -42,17 +52,11 @@ fun RowScope.NavigationBarItem(
                 indication = null,
                 interactionSource = interactionSource
             )
-            .windowInsetsPadding(WindowInsets.safeContent.exclude(WindowInsets.ime).only(WindowInsetsSides.Bottom))
             .padding(vertical = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = color.copy(alpha = alpha),
-            modifier = Modifier.size(style.iconSize)
-        )
+        renderIcon(icon, style.iconSize, color.copy(alpha = alpha))
         Text(
             text = label,
             style = LocalTypography.current.labelSmall.copy(color = color.copy(alpha = alpha)),

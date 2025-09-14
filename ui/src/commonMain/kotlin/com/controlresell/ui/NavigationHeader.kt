@@ -1,37 +1,33 @@
 package com.controlresell.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun NavigationHeader(
     title: String? = null,
     modifier: Modifier = Modifier,
-    titleStyle: TextStyle = LocalTypography.current.h5,
+    style: NavigationHeaderStyle = LocalNavigationHeaderStyle.current,
     startElement: (@Composable () -> Unit)? = null,
     endElement: (@Composable () -> Unit)? = null,
-    onLayout: ((IntSize) -> Unit)? = null,
     content: @Composable (() -> Unit)? = null,
 ) {
-    BoxWithConstraints(
+    Box(
         modifier = modifier
+            .background(style.backgroundColor)
             .fillMaxWidth()
-            .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Top))
-            .padding(vertical = 8.dp, horizontal = 16.dp)
-            .onGloballyPositioned { coords ->
-                onLayout?.invoke(coords.size)
-            }
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Top))
+                .padding(vertical = 8.dp, horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -46,7 +42,7 @@ fun NavigationHeader(
                 } else if (title != null) {
                     Text(
                         text = title,
-                        style = titleStyle,
+                        style = style.titleStyle,
                         textAlign = TextAlign.Center,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
