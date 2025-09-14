@@ -22,6 +22,7 @@ val LocalCardStyle = staticCompositionLocalOf { CardStyle() }
 val LocalMenuItemStyle = staticCompositionLocalOf { MenuItemStyle() }
 val LocalActivityIndicatorStyle = staticCompositionLocalOf { ActivityIndicatorStyle() }
 val LocalNavigationBarStyle = staticCompositionLocalOf { NavigationBarStyle() }
+val LocalNavigationHeaderStyle = staticCompositionLocalOf { NavigationHeaderStyle() }
 
 @Composable
 fun ControlResellTheme(
@@ -45,6 +46,7 @@ fun ControlResellTheme(
                 LocalMenuItemStyle provides DefaultMenuItemStyle,
                 LocalActivityIndicatorStyle provides DefaultActivityIndicatorStyle,
                 LocalNavigationBarStyle provides DefaultNavigationBarStyle,
+                LocalNavigationHeaderStyle provides DefaultNavigationHeaderStyle,
             ) {
                 Box(Modifier.fillMaxSize().background(colors.background)) {
                     content()

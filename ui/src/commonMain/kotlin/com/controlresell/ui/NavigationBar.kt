@@ -1,14 +1,12 @@
 package com.controlresell.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.graphicsLayer
 
 @Composable
@@ -20,21 +18,34 @@ fun NavigationBar(
     CompositionLocalProvider(
         LocalNavigationBarStyle provides style,
     ) {
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .graphicsLayer {
-                    /*
-                    renderEffect = RenderEffect.createBlurEffect(
-                        style.blurRadius.toPx(), style.blurRadius.toPx(),
-                        Shader.TileMode.CLAMP
+        Box {
+            Box(
+                Modifier
+                    .matchParentSize()
+                    .background(style.backgroundColor)
+                    .blur(style.blurRadius) // This does not apply to content under the bar :(
+                    .graphicsLayer {
+                        // And this is not available on iOS yet :(
+                        /*
+                        renderEffect = RenderEffect.createBlurEffect(
+                            style.blurRadius.toPx(), style.blurRadius.toPx(),
+                            Shader.TileMode.CLAMP
+                        )
+                         */
+                    }
+            )
+            Row(
+                modifier = modifier
+                    .windowInsetsPadding(
+                        WindowInsets.safeContent
+                            .exclude(WindowInsets.ime)
+                            .only(WindowInsetsSides.Bottom)
                     )
-                     */
-                }
-                .background(style.backgroundColor),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.Top,
-            content = content
-        )
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.Top,
+                content = content
+            )
+        }
     }
 }
