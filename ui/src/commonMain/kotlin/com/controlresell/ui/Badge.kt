@@ -15,8 +15,6 @@ import androidx.compose.ui.unit.dp
 import com.adamglin.PhosphorIcons
 import com.adamglin.phosphoricons.Regular
 import com.adamglin.phosphoricons.regular.X
-import com.controlresell.ui.generated.resources.Res
-import com.controlresell.ui.generated.resources.badge_delete_button_description
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

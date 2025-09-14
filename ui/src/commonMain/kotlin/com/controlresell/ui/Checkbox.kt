@@ -20,8 +20,6 @@ import androidx.compose.ui.unit.sp
 import com.adamglin.PhosphorIcons
 import com.adamglin.phosphoricons.Bold
 import com.adamglin.phosphoricons.bold.Check
-import com.controlresell.ui.generated.resources.Res
-import com.controlresell.ui.generated.resources.checkbox_checked
 import org.jetbrains.compose.resources.stringResource
 
 enum class CheckboxShape { Circle, Square }

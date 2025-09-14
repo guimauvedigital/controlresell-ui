@@ -12,8 +12,6 @@ import androidx.compose.ui.unit.dp
 import com.adamglin.PhosphorIcons
 import com.adamglin.phosphoricons.Bold
 import com.adamglin.phosphoricons.bold.ArrowLeft
-import com.controlresell.ui.generated.resources.Res
-import com.controlresell.ui.generated.resources.back_button_description
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

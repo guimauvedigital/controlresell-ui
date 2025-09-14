@@ -149,6 +149,11 @@ android {
     }
 }
 
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.controlresell.ui"
+}
+
 compose.desktop {
     application {
         mainClass = "MainKt"

@@ -23,8 +23,6 @@ import androidx.compose.ui.unit.dp
 import com.adamglin.PhosphorIcons
 import com.adamglin.phosphoricons.Fill
 import com.adamglin.phosphoricons.fill.XCircle
-import com.controlresell.ui.generated.resources.Res
-import com.controlresell.ui.generated.resources.clear_button_description
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
