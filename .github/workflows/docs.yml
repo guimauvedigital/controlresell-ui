@@ -24,13 +24,13 @@ jobs:
           distribution: 'temurin'
           java-version: 21
       - name: Build Storytale
-        run: ./gradlew jsBrowserStoriesProductionExecutableDistribution
+        run: ./gradlew jsBrowserStoriesDevelopmentExecutableDistribution
       - name: Add CNAME
-        run: echo "ui.controlresell.com" > ui/build/dist/js/StoriesProductionExecutable/CNAME
+        run: echo "ui.controlresell.com" > ui/build/dist/js/StoriesDevelopmentExecutable/CNAME
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ui/build/dist/js/StoriesProductionExecutable
+          path: ui/build/dist/js/StoriesDevelopmentExecutable
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
