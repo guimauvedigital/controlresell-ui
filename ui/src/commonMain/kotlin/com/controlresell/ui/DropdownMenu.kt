@@ -38,6 +38,7 @@ data class DropdownMenuOption<T>(
 @Immutable
 data class DropdownMenuState<T>(
     val selectedItems: List<DropdownMenuOption<T>> = mutableListOf(),
+    val excludedItems: List<DropdownMenuOption<T>> = mutableListOf(),
     val isVisible: Boolean = false,
     val filterInput: String = "",
 )
@@ -57,13 +58,16 @@ fun <T> DropdownMenu(
     forceAtLeastOneSelection: Boolean = false,
     closeOnSelectionWhenMaxOneSelection: Boolean = false,
     enableSearch: Boolean = false,
+    enableExclude: Boolean = false,
     onElementSelected: ((selectedItems: List<DropdownMenuOption<T>>, allSelection: List<DropdownMenuOption<T>>) -> Unit)? = null,
     onElementRemoved: ((removedItems: List<DropdownMenuOption<T>>, allSelection: List<DropdownMenuOption<T>>) -> Unit)? = null,
+    onElementExcluded: ((excludedItems: List<DropdownMenuOption<T>>, allExcluded: List<DropdownMenuOption<T>>) -> Unit)? = null,
+    onElementUnexcluded: ((unexcludedItems: List<DropdownMenuOption<T>>, allExcluded: List<DropdownMenuOption<T>>) -> Unit)? = null,
     onBlockedElementPressed: ((blockedItem: DropdownMenuOption<T>) -> Unit)? = null,
     getColorForSelection: ((value: DropdownMenuOption<T>, index: Int) -> Color)? = null,
     optionContainerWidth: Int? = null,
     optionContainerBackgroundColor: Color = Color.Black,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
 
     var state by remember { mutableStateOf(DropdownMenuState<T>()) }
@@ -152,11 +156,13 @@ fun <T> DropdownMenu(
                 ) else LazyColumn {
                     items(filteredOptions) { item ->
                         val isSelected = state.selectedItems.any { it.id == item.id }
+                        val isExcluded = state.excludedItems.any { it.id == item.id }
                         val mainColor = when {
                             item.isBlocked -> Color.Gray
                             isSelected -> getColorForSelection?.invoke(item, state.selectedItems.indexOf(item))
                                 ?: Color.White
 
+                            isExcluded -> Error
                             else -> Color.White
                         }
 
@@ -169,21 +175,43 @@ fun <T> DropdownMenu(
                                         item.isBlocked -> onBlockedElementPressed?.invoke(item)
                                         isSelected -> {
                                             if (!(forceAtLeastOneSelection && state.selectedItems.size == 1)) {
-                                                state = state.copy(
-                                                    selectedItems = state.selectedItems.filter { it.id != item.id }
-                                                )
-                                                item.onClick?.invoke(false, false)
-                                                onElementRemoved?.invoke(listOf(item), state.selectedItems)
+                                                if (enableExclude) {
+                                                    // Move from selected to excluded
+                                                    val newSelected = state.selectedItems.filter { it.id != item.id }
+                                                    val newExcluded = state.excludedItems + item
+                                                    state = state.copy(
+                                                        selectedItems = newSelected,
+                                                        excludedItems = newExcluded
+                                                    )
+                                                    // callbacks
+                                                    item.onClick?.invoke(false, false)
+                                                    onElementRemoved?.invoke(listOf(item), newSelected)
+                                                    onElementExcluded?.invoke(listOf(item), newExcluded)
+                                                } else {
+                                                    val newSelected = state.selectedItems.filter { it.id != item.id }
+                                                    state = state.copy(selectedItems = newSelected)
+                                                    item.onClick?.invoke(false, false)
+                                                    onElementRemoved?.invoke(listOf(item), newSelected)
+                                                }
                                             }
+                                        }
+
+                                        isExcluded -> {
+                                            // Move from excluded to not selected
+                                            val newExcluded = state.excludedItems.filter { it.id != item.id }
+                                            state = state.copy(excludedItems = newExcluded)
+                                            onElementUnexcluded?.invoke(listOf(item), newExcluded)
                                         }
 
                                         else -> {
                                             if (maxSelection == null || state.selectedItems.size < maxSelection) {
-                                                state = state.copy(
-                                                    selectedItems = state.selectedItems + item
-                                                )
+                                                // Ensure it's not in excluded list when selecting
+                                                val newExcluded = state.excludedItems
+                                                val newSelected = state.selectedItems + item
+                                                state =
+                                                    state.copy(selectedItems = newSelected, excludedItems = newExcluded)
                                                 item.onClick?.invoke(true, false)
-                                                onElementSelected?.invoke(listOf(item), state.selectedItems)
+                                                onElementSelected?.invoke(listOf(item), newSelected)
                                                 if (closeOnSelectionWhenMaxOneSelection && maxSelection == 1) {
                                                     state = state.copy(isVisible = false)
                                                 }
@@ -206,7 +234,7 @@ fun <T> DropdownMenu(
                                     textColor = Success
                                 )
                             )
-                            if (isSelected) Icon(
+                            if (isSelected || isExcluded) Icon(
                                 PhosphorIcons.Bold.Check,
                                 contentDescription = null,
                                 tint = mainColor

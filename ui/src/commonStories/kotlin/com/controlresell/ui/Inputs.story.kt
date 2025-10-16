@@ -100,6 +100,7 @@ val DropdownMenu by story {
         val maxSelection by parameter(2)
         val enableSearch by parameter(false)
         val forceAtLeastOneSelection by parameter(true)
+        val enableExclude by parameter(true)
 
         DropdownMenu(
             options = listOf(
@@ -136,6 +137,7 @@ val DropdownMenu by story {
             enableSearch = enableSearch,
             forceAtLeastOneSelection = forceAtLeastOneSelection,
             closeOnSelectionWhenMaxOneSelection = true,
+            enableExclude = enableExclude,
             onElementSelected = { selected, all ->
                 println("Selected: ${selected.map { it.label }} / All selection: ${all.map { it.label }}")
             },
@@ -144,6 +146,12 @@ val DropdownMenu by story {
             },
             onBlockedElementPressed = { blocked ->
                 println("Blocked element pressed: ${blocked.label}")
+            },
+            onElementExcluded = { excluded, allExcluded ->
+                println("Excluded: ${excluded.map { it.label }} / All excluded: ${allExcluded.map { it.label }}")
+            },
+            onElementUnexcluded = { unexcluded, allExcluded ->
+                println("Unexcluded: ${unexcluded.map { it.label }} / All excluded: ${allExcluded.map { it.label }}")
             },
             getColorForSelection = { value, _ ->
                 if (value.isPopular) Color.Green else Color.White
