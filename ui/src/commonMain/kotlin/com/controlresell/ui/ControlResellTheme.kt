@@ -23,6 +23,7 @@ val LocalMenuItemStyle = staticCompositionLocalOf { MenuItemStyle() }
 val LocalActivityIndicatorStyle = staticCompositionLocalOf { ActivityIndicatorStyle() }
 val LocalNavigationBarStyle = staticCompositionLocalOf { NavigationBarStyle() }
 val LocalNavigationHeaderStyle = staticCompositionLocalOf { NavigationHeaderStyle() }
+val LocalTimelineItemStyle = staticCompositionLocalOf { TimelineItemStyle() }
 
 @Composable
 fun ControlResellTheme(
@@ -47,6 +48,7 @@ fun ControlResellTheme(
                 LocalActivityIndicatorStyle provides DefaultActivityIndicatorStyle,
                 LocalNavigationBarStyle provides DefaultNavigationBarStyle,
                 LocalNavigationHeaderStyle provides DefaultNavigationHeaderStyle,
+                LocalTimelineItemStyle provides DefaultTimelineItemStyle,
             ) {
                 Box(Modifier.fillMaxSize().background(colors.background)) {
                     content()

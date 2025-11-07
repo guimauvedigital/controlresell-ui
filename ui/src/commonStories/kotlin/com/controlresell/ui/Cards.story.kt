@@ -102,3 +102,44 @@ val Banner by story {
         }
     }
 }
+
+val Timeline by story {
+    ControlResellTheme {
+        val title by parameter("Create a services site 2015-09-01")
+        val subtitle by parameter("22 secondes")
+        val time by parameter("18:12:44")
+
+        Column(
+            modifier = Modifier.padding(16.dp).verticalScroll(rememberScrollState())
+        ) {
+            TimelineItem(
+                leftText = time,
+                title = title,
+                subtitle = subtitle,
+                dotColor = LocalColorScheme.current.success,
+                onClick = {}
+            )
+            TimelineItem(
+                leftText = "18:15:32",
+                title = "Deploy to production",
+                subtitle = "45 secondes",
+                dotColor = LocalColorScheme.current.warning,
+                onClick = {}
+            )
+            TimelineItem(
+                leftText = "18:20:15",
+                title = "Run tests",
+                subtitle = "1 minute",
+                dotColor = LocalColorScheme.current.primary,
+                onClick = {}
+            )
+            TimelineItem(
+                leftText = "18:25:00",
+                title = "Build completed",
+                dotColor = LocalColorScheme.current.error,
+                showLine = false,
+                onClick = {}
+            )
+        }
+    }
+}
