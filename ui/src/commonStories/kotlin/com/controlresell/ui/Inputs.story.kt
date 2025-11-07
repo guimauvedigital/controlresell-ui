@@ -3,7 +3,10 @@ package com.controlresell.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.ExperimentalComposeApi
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -94,56 +97,63 @@ val Switch by story {
     }
 }
 
-@OptIn(ExperimentalComposeApi::class)
+data class DemoOption(
+    val id: Int,
+    val label: String,
+    val isBlocked: Boolean = false,
+    val isPopular: Boolean = false,
+)
+
 val DropdownMenu by story {
     ControlResellTheme {
         val maxSelection by parameter(2)
         val enableSearch by parameter(false)
         val forceAtLeastOneSelection by parameter(true)
+        val enableExclude by parameter(true)
+
+        val options = remember {
+            listOf(
+                DemoOption(id = 1, label = "Option 1"),
+                DemoOption(id = 2, label = "Option 2", isPopular = true),
+                DemoOption(id = 3, label = "Option 3", isBlocked = true),
+                DemoOption(id = 4, label = "Option 4"),
+            )
+        }
+
+        var expanded by remember { mutableStateOf(false) }
+        var selectionState by remember {
+            mutableStateOf(
+                SelectionState(
+                    selected = listOf(options[0]),
+                    excluded = emptyList()
+                )
+            )
+        }
+        var searchQuery by remember { mutableStateOf("") }
 
         DropdownMenu(
-            options = listOf(
-                DropdownMenuOption(
-                    id = "1",
-                    label = "Option 1",
-                    data = 1,
-                    isDefaultSelected = true,
-                    onClick = { selected, _ -> println("Option 1 selected: $selected") }
-                ),
-                DropdownMenuOption(
-                    id = "2",
-                    label = "Option 2",
-                    data = 2,
-                    isPopular = true,
-                    onClick = { selected, _ -> println("Option 2 selected: $selected") }
-                ),
-                DropdownMenuOption(
-                    id = "3",
-                    label = "Option 3",
-                    data = 3,
-                    isBlocked = true,
-                    onClick = { selected, blocked -> println("Option 3 blocked: $blocked") }
-                ),
-                DropdownMenuOption(
-                    id = "4",
-                    label = "Option 4",
-                    data = 4,
-                    onClick = { selected, _ -> println("Option 4 selected: $selected") }
-                )
-            ),
+            expanded = expanded,
+            onExpandedChange = { expanded = it },
+            options = options,
+            selectionState = selectionState,
+            onSelectionChange = { newState ->
+                selectionState = newState
+                println("Selection changed - Selected: ${newState.selected.map { it.label }}, Excluded: ${newState.excluded.map { it.label }}")
+            },
+            itemLabel = { it.label },
+            itemKey = { it.id },
+            itemIsBlocked = { it.isBlocked },
+            itemIsPopular = { it.isPopular },
             label = "Select an option",
             maxSelection = maxSelection,
             enableSearch = enableSearch,
+            searchQuery = searchQuery,
+            onSearchQueryChange = { searchQuery = it },
             forceAtLeastOneSelection = forceAtLeastOneSelection,
             closeOnSelectionWhenMaxOneSelection = true,
-            onElementSelected = { selected, all ->
-                println("Selected: ${selected.map { it.label }} / All selection: ${all.map { it.label }}")
-            },
-            onElementRemoved = { removed, all ->
-                println("Removed: ${removed.map { it.label }} / Remaining: ${all.map { it.label }}")
-            },
-            onBlockedElementPressed = { blocked ->
-                println("Blocked element pressed: ${blocked.label}")
+            enableExclude = enableExclude,
+            onBlockedItemPressed = { blocked ->
+                println("Blocked item pressed: ${blocked.label}")
             },
             getColorForSelection = { value, _ ->
                 if (value.isPopular) Color.Green else Color.White

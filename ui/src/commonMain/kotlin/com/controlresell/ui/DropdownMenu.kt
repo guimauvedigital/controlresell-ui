@@ -25,31 +25,25 @@ import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
 @Immutable
-data class DropdownMenuOption<T>(
-    val id: String,
-    val label: String,
-    val data: T? = null,
-    val isDefaultSelected: Boolean = false,
-    val isBlocked: Boolean = false,
-    val isPopular: Boolean = false,
-    val onClick: ((selected: Boolean, blocked: Boolean?) -> Unit)? = null,
-)
-
-@Immutable
-data class DropdownMenuState<T>(
-    val selectedItems: List<DropdownMenuOption<T>> = mutableListOf(),
-    val isVisible: Boolean = false,
-    val filterInput: String = "",
+data class SelectionState<T>(
+    val selected: List<T> = emptyList(),
+    val excluded: List<T> = emptyList(),
 )
 
 enum class DropdownMenuType { Menu, Icon }
 
-// Note: This component might not be feature-complete yet. So it will get improved over time.
-
-@ExperimentalComposeApi
 @Composable
 fun <T> DropdownMenu(
-    options: List<DropdownMenuOption<T>>,
+    expanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit,
+    options: List<T>,
+    selectionState: SelectionState<T>,
+    onSelectionChange: (SelectionState<T>) -> Unit,
+    itemLabel: (T) -> String,
+    modifier: Modifier = Modifier,
+    itemKey: ((T) -> Any)? = null,
+    itemIsBlocked: ((T) -> Boolean)? = null,
+    itemIsPopular: ((T) -> Boolean)? = null,
     title: String? = null,
     label: String? = null,
     containerType: DropdownMenuType = DropdownMenuType.Menu,
@@ -57,31 +51,20 @@ fun <T> DropdownMenu(
     forceAtLeastOneSelection: Boolean = false,
     closeOnSelectionWhenMaxOneSelection: Boolean = false,
     enableSearch: Boolean = false,
-    onElementSelected: ((selectedItems: List<DropdownMenuOption<T>>, allSelection: List<DropdownMenuOption<T>>) -> Unit)? = null,
-    onElementRemoved: ((removedItems: List<DropdownMenuOption<T>>, allSelection: List<DropdownMenuOption<T>>) -> Unit)? = null,
-    onBlockedElementPressed: ((blockedItem: DropdownMenuOption<T>) -> Unit)? = null,
-    getColorForSelection: ((value: DropdownMenuOption<T>, index: Int) -> Color)? = null,
+    searchQuery: String = "",
+    onSearchQueryChange: (String) -> Unit = {},
+    enableExclude: Boolean = false,
+    onBlockedItemPressed: ((T) -> Unit)? = null,
+    getColorForSelection: ((T, Int) -> Color)? = null,
     optionContainerWidth: Int? = null,
     optionContainerBackgroundColor: Color = Color.Black,
-    modifier: Modifier,
 ) {
 
-    var state by remember { mutableStateOf(DropdownMenuState<T>()) }
     var toggleSize by remember { mutableStateOf(IntSize(0, 0)) }
-
-    // Initialize default selected items
-    LaunchedEffect(Unit) {
-        val defaults = options
-            .filter { it.isDefaultSelected }
-            .let { if (maxSelection != null) it.take(maxSelection) else it }
-        state = state.copy(selectedItems = defaults.toMutableList())
-        defaults.forEach { it.onClick?.invoke(true, false) }
-        onElementSelected?.invoke(defaults, state.selectedItems)
-    }
 
     Column(modifier = modifier.wrapContentSize()) {
         // --- Dropdown Toggle ---
-        val icon = if (state.isVisible) PhosphorIcons.Bold.CaretUp else PhosphorIcons.Bold.CaretDown
+        val icon = if (expanded) PhosphorIcons.Bold.CaretUp else PhosphorIcons.Bold.CaretDown
         if (containerType == DropdownMenuType.Menu) MenuItem(
             label = label ?: stringResource(Res.string.dropdown_menu_select),
             customActionElement = {
@@ -92,7 +75,7 @@ fun <T> DropdownMenu(
                 )
             },
             onClick = {
-                state = state.copy(isVisible = !state.isVisible)
+                onExpandedChange(!expanded)
             },
             modifier = Modifier.onGloballyPositioned { layoutCoordinates ->
                 toggleSize = layoutCoordinates.size
@@ -100,7 +83,7 @@ fun <T> DropdownMenu(
         ) else OptionButton(
             icon = icon,
             onClick = {
-                state = state.copy(isVisible = !state.isVisible)
+                onExpandedChange(!expanded)
             },
             modifier = Modifier.onGloballyPositioned { layoutCoordinates ->
                 toggleSize = layoutCoordinates.size
@@ -108,12 +91,12 @@ fun <T> DropdownMenu(
         )
 
         // --- Dropdown Menu ---
-        if (state.isVisible) Popup(
+        if (expanded) Popup(
             offset = IntOffset(
                 x = 0,
                 y = toggleSize.height
             ),
-            onDismissRequest = { state = state.copy(isVisible = false) }
+            onDismissRequest = { onExpandedChange(false) }
         ) {
             Column(
                 modifier = Modifier
@@ -126,8 +109,8 @@ fun <T> DropdownMenu(
 
                 if (enableSearch) {
                     Input(
-                        value = state.filterInput,
-                        onValueChange = { state = state.copy(filterInput = it) },
+                        value = searchQuery,
+                        onValueChange = onSearchQueryChange,
                         placeholder = stringResource(Res.string.dropdown_menu_search),
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -142,21 +125,28 @@ fun <T> DropdownMenu(
                     style = LocalTypography.current.label,
                 )
 
-                val filteredOptions = if (state.filterInput.isBlank()) options
-                else options.filter { it.label.contains(state.filterInput, ignoreCase = true) }
+                val filteredOptions = if (searchQuery.isBlank()) options
+                else options.filter { itemLabel(it).contains(searchQuery, ignoreCase = true) }
 
                 if (filteredOptions.isEmpty()) Text(
                     text = stringResource(Res.string.dropdown_menu_no_items),
                     modifier = Modifier.padding(16.dp),
                     color = Color.Gray
                 ) else LazyColumn {
-                    items(filteredOptions) { item ->
-                        val isSelected = state.selectedItems.any { it.id == item.id }
+                    items(
+                        items = filteredOptions,
+                        key = itemKey ?: { it.hashCode() }
+                    ) { item ->
+                        val isBlocked = itemIsBlocked?.invoke(item) == true
+                        val isPopular = itemIsPopular?.invoke(item) == true
+                        val isSelected = selectionState.selected.contains(item)
+                        val isExcluded = selectionState.excluded.contains(item)
                         val mainColor = when {
-                            item.isBlocked -> Color.Gray
-                            isSelected -> getColorForSelection?.invoke(item, state.selectedItems.indexOf(item))
+                            isBlocked -> Color.Gray
+                            isSelected -> getColorForSelection?.invoke(item, selectionState.selected.indexOf(item))
                                 ?: Color.White
 
+                            isExcluded -> Error
                             else -> Color.White
                         }
 
@@ -166,26 +156,49 @@ fun <T> DropdownMenu(
                                 .padding(vertical = 4.dp)
                                 .clickable {
                                     when {
-                                        item.isBlocked -> onBlockedElementPressed?.invoke(item)
+                                        isBlocked -> onBlockedItemPressed?.invoke(item)
                                         isSelected -> {
-                                            if (!(forceAtLeastOneSelection && state.selectedItems.size == 1)) {
-                                                state = state.copy(
-                                                    selectedItems = state.selectedItems.filter { it.id != item.id }
-                                                )
-                                                item.onClick?.invoke(false, false)
-                                                onElementRemoved?.invoke(listOf(item), state.selectedItems)
+                                            if (!(forceAtLeastOneSelection && selectionState.selected.size == 1)) {
+                                                if (enableExclude) {
+                                                    // Move from selected to excluded
+                                                    val newSelected = selectionState.selected.filter { it != item }
+                                                    val newExcluded = selectionState.excluded + item
+                                                    onSelectionChange(
+                                                        SelectionState(
+                                                            selected = newSelected,
+                                                            excluded = newExcluded
+                                                        )
+                                                    )
+                                                } else {
+                                                    // Just deselect
+                                                    val newSelected = selectionState.selected.filter { it != item }
+                                                    onSelectionChange(
+                                                        selectionState.copy(selected = newSelected)
+                                                    )
+                                                }
                                             }
                                         }
 
+                                        isExcluded -> {
+                                            // Move from excluded to not selected
+                                            val newExcluded = selectionState.excluded.filter { it != item }
+                                            onSelectionChange(
+                                                selectionState.copy(excluded = newExcluded)
+                                            )
+                                        }
+
                                         else -> {
-                                            if (maxSelection == null || state.selectedItems.size < maxSelection) {
-                                                state = state.copy(
-                                                    selectedItems = state.selectedItems + item
+                                            if (maxSelection == null || selectionState.selected.size < maxSelection) {
+                                                val newSelected = selectionState.selected + item
+                                                val shouldClose =
+                                                    closeOnSelectionWhenMaxOneSelection && maxSelection == 1
+
+                                                onSelectionChange(
+                                                    selectionState.copy(selected = newSelected)
                                                 )
-                                                item.onClick?.invoke(true, false)
-                                                onElementSelected?.invoke(listOf(item), state.selectedItems)
-                                                if (closeOnSelectionWhenMaxOneSelection && maxSelection == 1) {
-                                                    state = state.copy(isVisible = false)
+
+                                                if (shouldClose) {
+                                                    onExpandedChange(false)
                                                 }
                                             }
                                         }
@@ -195,18 +208,18 @@ fun <T> DropdownMenu(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = item.label,
+                                text = itemLabel(item),
                                 color = mainColor,
                                 modifier = Modifier.padding(vertical = 8.dp)
                             )
-                            if (item.isPopular) OptionButton(
+                            if (isPopular) OptionButton(
                                 text = stringResource(Res.string.dropdown_menu_popular),
                                 style = StatusOptionButtonStyle.copy(
                                     backgroundColor = SuccessOpacity16,
                                     textColor = Success
                                 )
                             )
-                            if (isSelected) Icon(
+                            if (isSelected || isExcluded) Icon(
                                 PhosphorIcons.Bold.Check,
                                 contentDescription = null,
                                 tint = mainColor
