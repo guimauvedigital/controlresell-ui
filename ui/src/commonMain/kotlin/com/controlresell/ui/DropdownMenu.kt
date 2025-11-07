@@ -45,11 +45,10 @@ data class DropdownMenuState<T>(
 
 enum class DropdownMenuType { Menu, Icon }
 
-// Note: This component might not be feature-complete yet. So it will get improved over time.
-
-@ExperimentalComposeApi
 @Composable
 fun <T> DropdownMenu(
+    state: DropdownMenuState<T>,
+    onStateChange: (DropdownMenuState<T>) -> Unit,
     options: List<DropdownMenuOption<T>>,
     title: String? = null,
     label: String? = null,
@@ -70,18 +69,7 @@ fun <T> DropdownMenu(
     modifier: Modifier = Modifier,
 ) {
 
-    var state by remember { mutableStateOf(DropdownMenuState<T>()) }
     var toggleSize by remember { mutableStateOf(IntSize(0, 0)) }
-
-    // Initialize default selected items
-    LaunchedEffect(Unit) {
-        val defaults = options
-            .filter { it.isDefaultSelected }
-            .let { if (maxSelection != null) it.take(maxSelection) else it }
-        state = state.copy(selectedItems = defaults.toMutableList())
-        defaults.forEach { it.onClick?.invoke(true, false) }
-        onElementSelected?.invoke(defaults, state.selectedItems)
-    }
 
     Column(modifier = modifier.wrapContentSize()) {
         // --- Dropdown Toggle ---
@@ -96,7 +84,7 @@ fun <T> DropdownMenu(
                 )
             },
             onClick = {
-                state = state.copy(isVisible = !state.isVisible)
+                onStateChange(state.copy(isVisible = !state.isVisible))
             },
             modifier = Modifier.onGloballyPositioned { layoutCoordinates ->
                 toggleSize = layoutCoordinates.size
@@ -104,7 +92,7 @@ fun <T> DropdownMenu(
         ) else OptionButton(
             icon = icon,
             onClick = {
-                state = state.copy(isVisible = !state.isVisible)
+                onStateChange(state.copy(isVisible = !state.isVisible))
             },
             modifier = Modifier.onGloballyPositioned { layoutCoordinates ->
                 toggleSize = layoutCoordinates.size
@@ -117,7 +105,7 @@ fun <T> DropdownMenu(
                 x = 0,
                 y = toggleSize.height
             ),
-            onDismissRequest = { state = state.copy(isVisible = false) }
+            onDismissRequest = { onStateChange(state.copy(isVisible = false)) }
         ) {
             Column(
                 modifier = Modifier
@@ -131,7 +119,7 @@ fun <T> DropdownMenu(
                 if (enableSearch) {
                     Input(
                         value = state.filterInput,
-                        onValueChange = { state = state.copy(filterInput = it) },
+                        onValueChange = { onStateChange(state.copy(filterInput = it)) },
                         placeholder = stringResource(Res.string.dropdown_menu_search),
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -179,9 +167,11 @@ fun <T> DropdownMenu(
                                                     // Move from selected to excluded
                                                     val newSelected = state.selectedItems.filter { it.id != item.id }
                                                     val newExcluded = state.excludedItems + item
-                                                    state = state.copy(
-                                                        selectedItems = newSelected,
-                                                        excludedItems = newExcluded
+                                                    onStateChange(
+                                                        state.copy(
+                                                            selectedItems = newSelected,
+                                                            excludedItems = newExcluded
+                                                        )
                                                     )
                                                     // callbacks
                                                     item.onClick?.invoke(false, false)
@@ -189,7 +179,7 @@ fun <T> DropdownMenu(
                                                     onElementExcluded?.invoke(listOf(item), newExcluded)
                                                 } else {
                                                     val newSelected = state.selectedItems.filter { it.id != item.id }
-                                                    state = state.copy(selectedItems = newSelected)
+                                                    onStateChange(state.copy(selectedItems = newSelected))
                                                     item.onClick?.invoke(false, false)
                                                     onElementRemoved?.invoke(listOf(item), newSelected)
                                                 }
@@ -199,7 +189,7 @@ fun <T> DropdownMenu(
                                         isExcluded -> {
                                             // Move from excluded to not selected
                                             val newExcluded = state.excludedItems.filter { it.id != item.id }
-                                            state = state.copy(excludedItems = newExcluded)
+                                            onStateChange(state.copy(excludedItems = newExcluded))
                                             onElementUnexcluded?.invoke(listOf(item), newExcluded)
                                         }
 
@@ -208,13 +198,17 @@ fun <T> DropdownMenu(
                                                 // Ensure it's not in excluded list when selecting
                                                 val newExcluded = state.excludedItems
                                                 val newSelected = state.selectedItems + item
-                                                state =
-                                                    state.copy(selectedItems = newSelected, excludedItems = newExcluded)
+                                                val shouldClose =
+                                                    closeOnSelectionWhenMaxOneSelection && maxSelection == 1
+                                                onStateChange(
+                                                    state.copy(
+                                                        selectedItems = newSelected,
+                                                        excludedItems = newExcluded,
+                                                        isVisible = !shouldClose
+                                                    )
+                                                )
                                                 item.onClick?.invoke(true, false)
                                                 onElementSelected?.invoke(listOf(item), newSelected)
-                                                if (closeOnSelectionWhenMaxOneSelection && maxSelection == 1) {
-                                                    state = state.copy(isVisible = false)
-                                                }
                                             }
                                         }
                                     }

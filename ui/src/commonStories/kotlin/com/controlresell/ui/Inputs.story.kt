@@ -3,7 +3,7 @@ package com.controlresell.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.ExperimentalComposeApi
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -102,8 +102,8 @@ val DropdownMenu by story {
         val forceAtLeastOneSelection by parameter(true)
         val enableExclude by parameter(true)
 
-        DropdownMenu(
-            options = listOf(
+        val options = remember {
+            listOf(
                 DropdownMenuOption(
                     id = "1",
                     label = "Option 1",
@@ -131,7 +131,24 @@ val DropdownMenu by story {
                     data = 4,
                     onClick = { selected, _ -> println("Option 4 selected: $selected") }
                 )
-            ),
+            )
+        }
+
+        var state by remember {
+            mutableStateOf(
+                DropdownMenuState(
+                    selectedItems = options.filter { it.isDefaultSelected },
+                    excludedItems = emptyList(),
+                    isVisible = false,
+                    filterInput = ""
+                )
+            )
+        }
+
+        DropdownMenu(
+            state = state,
+            onStateChange = { state = it },
+            options = options,
             label = "Select an option",
             maxSelection = maxSelection,
             enableSearch = enableSearch,
